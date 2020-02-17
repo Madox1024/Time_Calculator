@@ -4,7 +4,7 @@ class MillisecondStamp:
 
     def __init__(self, time_stamp):
         try:
-            self.fixed_time_stamp = self.fix_time(time_stamp)
+            self.fixed_time_stamp = fix_time(time_stamp)
             self.millisec = int(self.fixed_time_stamp[-3:])
             self.seconds = int(self.fixed_time_stamp[-6:-4]) * 1000
             self.minutes = int(self.fixed_time_stamp[-9:-7]) * (60 * 1000)
@@ -13,18 +13,19 @@ class MillisecondStamp:
         except ValueError:
             print('Value Error - CalcMs({timestamp})'.format(timestamp=time_stamp))
 
-    def fix_time(self, t):
-        default = '00:00:00.000'
-        if t == '':
-            result = default
+
+def fix_time(t):
+    default = '00:00:00.000'
+    if t == '':
+        result = default
+    else:
+        if t[-4] != '.':
+            t = t + '.000'
+        if len(t) < 12:
+            result = default[:12 - len(t)] + t
         else:
-            if t[-4] != '.':
-                t = t + '.000'
-            if len(t) < 12:
-                result = default[:12 - len(t)] + t
-            else:
-                result = t
-        return result
+            result = t
+    return result
 
 
 def fix_stamp(t):
